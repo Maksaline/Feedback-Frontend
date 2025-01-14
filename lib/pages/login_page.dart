@@ -30,18 +30,6 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       await context.read<AuthCubit>().login(username.text, pass.text);
-
-      // final User? user = await context.read<AuthCubit>().login(username.text, pass.text);
-
-      // if (user != null) {
-      //   print(user.name);
-      // } else {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     const SnackBar(
-      //       content: Text('Invalid credentials'),
-      //     ),
-      //   );
-      // }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -58,7 +46,39 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: BlocConsumer<AuthCubit, LoginState>(
+  listener: (context, state) {
+    if(state is LoginSuccess) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Row(
+            children: [
+              Icon(Icons.check_circle, color: Colors.green),
+              SizedBox(width: 10),
+              Text('Log in Successful'),
+            ],
+          ),
+        ),
+      );
+      Future.delayed(const Duration(seconds: 1), () => context.pop());
+    } else if(state is LoginFailure) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Row(
+            children: [
+              const Icon(Icons.error, color: Colors.red),
+              const SizedBox(width: 10),
+              Text(state.error),
+            ],
+          ),
+        ),
+      );
+    }
+  },
+  builder: (context, state) {
+    return SingleChildScrollView(
         child: Stack(
           children: [
             Container(
@@ -278,7 +298,9 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ],
         ),
-      ),
+      );
+  },
+),
     );
   }
 }
