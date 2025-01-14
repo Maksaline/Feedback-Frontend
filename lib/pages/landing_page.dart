@@ -1,3 +1,4 @@
+import 'package:feedback/cubits/auth_cubit.dart';
 import 'package:feedback/cubits/provider_cubit.dart';
 import 'package:feedback/main.dart';
 import 'package:feedback/models/provider_model.dart';
@@ -69,46 +70,68 @@ class _LandingPageState extends State<LandingPage> {
                           ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                      BlocBuilder<AuthCubit, LoginState>(
+                        builder: (context, state) {
+                          if(state is LoginSuccess){
+                            return Row(
+                              children: [
+                                Text(
+                                  state.user.name,
+                                  style: Theme.of(context).textTheme.labelMedium,
+                                ),
+                                const SizedBox(width: 10),
+                                Icon(
+                                  Icons.account_circle,
+                                  color: Theme.of(context).colorScheme.secondary,
+                                  size: 40,
+                                ),
+                              ],
+                            );
+                          }
+                          else {
+                            return Row(
+                            children: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  side: BorderSide(
+                                    color: Theme.of(context).colorScheme.secondary,
+                                    width: 1,
+                                  ),
+                                  backgroundColor: Theme.of(context).colorScheme.tertiary,
+                                  fixedSize: const Size(130, 50),
+                                ),
+                                onPressed: () {
+                                  context.go('/login');
+                                },
+                                child: Text(
+                                  'Log In',
+                                  style: Theme.of(context).textTheme.labelMedium,
+                                ),
                               ),
-                              side: BorderSide(
-                                color: Theme.of(context).colorScheme.secondary,
-                                width: 1,
+                              const SizedBox(width: 10),
+                              ElevatedButton(
+                                onPressed: () {
+                                  context.go('/signup');
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                                  fixedSize: const Size(130, 50),
+                                ),
+                                child: Text(
+                                  'Sign Up',
+                                  style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Theme.of(context).colorScheme.surface),
+                                ),
                               ),
-                              backgroundColor: Theme.of(context).colorScheme.tertiary,
-                              fixedSize: const Size(130, 50),
-                            ),
-                            onPressed: () {
-                              context.go('/login');
-                            },
-                            child: Text(
-                              'Log In',
-                              style: Theme.of(context).textTheme.labelMedium,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          ElevatedButton(
-                            onPressed: () {
-                              context.go('/signup');
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              backgroundColor: Theme.of(context).colorScheme.onPrimary,
-                              fixedSize: const Size(130, 50),
-                            ),
-                            child: Text(
-                              'Sign Up',
-                              style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Theme.of(context).colorScheme.surface),
-                            ),
-                          ),
-                        ],
+                            ],
+                          );
+                          }
+                        }
                       )
                     ],
                   ),
