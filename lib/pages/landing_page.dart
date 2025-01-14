@@ -135,7 +135,7 @@ class _LandingPageState extends State<LandingPage> {
                       ),
                       Icon(
                         Icons.feedback,
-                        size: 200,
+                        size: MediaQuery.of(context).size.width / 8,
                         color: Theme.of(context).colorScheme.secondary,
                       ),
                     ],

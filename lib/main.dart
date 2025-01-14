@@ -1,3 +1,4 @@
+import 'package:feedback/cubits/auth_cubit.dart';
 import 'package:feedback/cubits/provider_cubit.dart';
 import 'package:feedback/cubits/theme_cubit.dart';
 import 'package:feedback/pages/landing_page.dart';
@@ -35,21 +36,6 @@ final _router = GoRouter(
           )
         ]
     ),
-    // ShellRoute(
-    //   builder: (context, state, child) {
-    //     return const LandingPage();
-    //   },
-    //   routes: [
-    //     GoRoute(
-    //       path: '/login',
-    //       builder: (context, state) => const LoginPage(),
-    //     ),
-    //     GoRoute(
-    //       path: '/signup',
-    //       builder: (context, state) => const SignupPage(),
-    //     )
-    //   ]
-    // )
   ]
 );
 
@@ -63,7 +49,8 @@ class MyApp extends StatelessWidget {
       builder: (context, theme) {
         return MultiBlocProvider(
           providers: [
-            BlocProvider(create: (context) => ProviderCubit())
+            BlocProvider(create: (context) => ProviderCubit()),
+            BlocProvider(create: (context) => AuthCubit())
           ],
           child: MaterialApp.router(
             debugShowCheckedModeBanner: false,

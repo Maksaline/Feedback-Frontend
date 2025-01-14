@@ -1,5 +1,10 @@
+import 'package:feedback/cubits/auth_cubit.dart';
+import 'package:feedback/pages/landing_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
+import '../models/user_model.dart';
 import '../responsive/responsive_layout.dart';
 
 class LoginPage extends StatefulWidget {
@@ -18,15 +23,36 @@ class _LoginPageState extends State<LoginPage> {
   bool _isChecked = false;
   bool isLoading = false;
   
-  void _logIn() {
+  void _logIn() async {
     setState(() {
       isLoading = true;
     });
-    Future.delayed(const Duration(seconds: 2), () {
+
+    try {
+      await context.read<AuthCubit>().login(username.text, pass.text);
+
+      // final User? user = await context.read<AuthCubit>().login(username.text, pass.text);
+
+      // if (user != null) {
+      //   print(user.name);
+      // } else {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(
+      //       content: Text('Invalid credentials'),
+      //     ),
+      //   );
+      // }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('An error occurred: $e'),
+        ),
+      );
+    } finally {
       setState(() {
         isLoading = false;
       });
-    });
+    }
   }
 
   @override
@@ -65,169 +91,171 @@ class _LoginPageState extends State<LoginPage> {
                         width: Responsive.isDesktop(context)
                             ? MediaQuery.of(context).size.width / 3
                             : MediaQuery.of(context).size.width / 1.25,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Responsive.isDesktop(context)
-                                ? const SizedBox()
-                                : Image.asset(
-                              'assets/images/logo.png',
-                              width: MediaQuery.of(context).size.width / 1.8,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            const SizedBox(
-                              height: 40,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Login',
-                                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    fontSize: 28,
-                                  ),
-                                ),
-                                const SizedBox(height: 20),
-                                Text(
-                                  'Please enter your Feedback credentials to log in.',
-                                  style: Theme.of(context).textTheme.labelSmall,
-                                ),
-                                const SizedBox(height: 30),
-                                Text(
-                                  'Username',
-                                  style: Theme.of(context).textTheme.labelMedium,
-                                ),
-                                Container(
-                                  height: 45,
-                                  padding: const EdgeInsets.only(top: 2),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2),
-                                  ),
-                                  child: TextFormField(
-                                    onFieldSubmitted: (value) {
-                                      FocusScope.of(context).requestFocus(_focus2);
-                                    },
-                                    focusNode: _focus1,
-                                    controller: username,
-                                    style: const TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
-                                    decoration: InputDecoration(
-                                      hintText: 'Username',
-                                      hintStyle:
-                                      const TextStyle(color: Colors.black54, fontSize: 15),
-                                      border: InputBorder.none,
-                                      prefixIcon: Icon(
-                                        Icons.person,
-                                        color: Theme.of(context).colorScheme.primary,
-                                      ),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Responsive.isDesktop(context)
+                                  ? const SizedBox()
+                                  : Image.asset(
+                                'assets/images/logo.png',
+                                width: MediaQuery.of(context).size.width / 1.8,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                              const SizedBox(
+                                height: 40,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Login',
+                                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                      fontSize: 28,
                                     ),
                                   ),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  'Password',
-                                  style: Theme.of(context).textTheme.labelMedium,
-                                ),
-                                Container(
-                                  height: 45,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2),
+                                  const SizedBox(height: 20),
+                                  Text(
+                                    'Please enter your Feedback credentials to log in.',
+                                    style: Theme.of(context).textTheme.labelSmall,
                                   ),
-                                  child: TextFormField(
-                                    onFieldSubmitted: (value) {
-                                      _logIn();
-                                    },
-                                    controller: pass,
-                                    focusNode: _focus2,
-                                    obscureText: isPassVisible,
-                                    style: const TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
-                                    decoration: InputDecoration(
-                                      hintText: 'Password',
-                                      hintStyle:
-                                      const TextStyle(color: Colors.black54, fontSize: 15),
-                                      border: InputBorder.none,
-                                      prefixIcon: Icon(
-                                        Icons.lock,
-                                        color: Theme.of(context).colorScheme.primary,
-                                      ),
-                                      suffixIcon: IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            isPassVisible = !isPassVisible;
-                                          });
-                                        },
-                                        icon: Icon(
-                                          Icons.visibility,
-                                          color:
-                                          Theme.of(context).colorScheme.primary,
+                                  const SizedBox(height: 30),
+                                  Text(
+                                    'Username',
+                                    style: Theme.of(context).textTheme.labelMedium,
+                                  ),
+                                  Container(
+                                    height: 45,
+                                    padding: const EdgeInsets.only(top: 2),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2),
+                                    ),
+                                    child: TextFormField(
+                                      onFieldSubmitted: (value) {
+                                        FocusScope.of(context).requestFocus(_focus2);
+                                      },
+                                      focusNode: _focus1,
+                                      controller: username,
+                                      style: const TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                                      decoration: InputDecoration(
+                                        hintText: 'Username',
+                                        hintStyle:
+                                        const TextStyle(color: Colors.black54, fontSize: 15),
+                                        border: InputBorder.none,
+                                        prefixIcon: Icon(
+                                          Icons.person,
+                                          color: Theme.of(context).colorScheme.primary,
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(height: 6,),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Checkbox(
-                                      value: _isChecked,
-                                      onChanged: (bool? value) {
-                                        setState(() {
-                                          _isChecked = value!;
-                                        });
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    'Password',
+                                    style: Theme.of(context).textTheme.labelMedium,
+                                  ),
+                                  Container(
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2),
+                                    ),
+                                    child: TextFormField(
+                                      onFieldSubmitted: (value) {
+                                        _logIn();
                                       },
-                                    ),
-                                    Text(
-                                      'Remember me',
-                                      style: Theme.of(context).textTheme.labelSmall,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 6),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    _logIn();
-                                  },
-                                  style: ButtonStyle(
-                                    fixedSize: WidgetStateProperty.all<Size>(
-                                        const Size(800, 48)),
-                                    backgroundColor:
-                                    WidgetStateProperty.all<Color>(
-                                        Theme.of(context).colorScheme.primary),
-                                    padding: WidgetStateProperty.all<
-                                        EdgeInsetsGeometry>(
-                                        const EdgeInsets.symmetric(
-                                            horizontal: 50, vertical: 10)),
-                                    shape: WidgetStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
+                                      controller: pass,
+                                      focusNode: _focus2,
+                                      obscureText: isPassVisible,
+                                      style: const TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                                      decoration: InputDecoration(
+                                        hintText: 'Password',
+                                        hintStyle:
+                                        const TextStyle(color: Colors.black54, fontSize: 15),
+                                        border: InputBorder.none,
+                                        prefixIcon: Icon(
+                                          Icons.lock,
+                                          color: Theme.of(context).colorScheme.primary,
+                                        ),
+                                        suffixIcon: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              isPassVisible = !isPassVisible;
+                                            });
+                                          },
+                                          icon: Icon(
+                                            Icons.visibility,
+                                            color:
+                                            Theme.of(context).colorScheme.primary,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                  child: isLoading
-                                      ? const FittedBox(
-                                    child: CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                  const SizedBox(height: 6,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Checkbox(
+                                        value: _isChecked,
+                                        onChanged: (bool? value) {
+                                          setState(() {
+                                            _isChecked = value!;
+                                          });
+                                        },
+                                      ),
+                                      Text(
+                                        'Remember me',
+                                        style: Theme.of(context).textTheme.labelSmall,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 6),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      _logIn();
+                                    },
+                                    style: ButtonStyle(
+                                      fixedSize: WidgetStateProperty.all<Size>(
+                                          const Size(800, 48)),
+                                      backgroundColor:
+                                      WidgetStateProperty.all<Color>(
+                                          Theme.of(context).colorScheme.primary),
+                                      padding: WidgetStateProperty.all<
+                                          EdgeInsetsGeometry>(
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 50, vertical: 10)),
+                                      shape: WidgetStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                      ),
                                     ),
-                                  )
-                                      : FittedBox(
-                                    child: Text(
-                                      'Login',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelMedium,
+                                    child: isLoading
+                                        ? const FittedBox(
+                                      child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                      ),
+                                    )
+                                        : FittedBox(
+                                      child: Text(
+                                        'Login',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
