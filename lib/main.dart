@@ -1,5 +1,6 @@
 import 'package:feedback/cubits/auth_cubit.dart';
 import 'package:feedback/cubits/provider_cubit.dart';
+import 'package:feedback/cubits/sign_up_cubit.dart';
 import 'package:feedback/cubits/theme_cubit.dart';
 import 'package:feedback/pages/landing_page.dart';
 import 'package:feedback/pages/login_page.dart';
@@ -50,7 +51,8 @@ class MyApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => ProviderCubit()),
-            BlocProvider(create: (context) => AuthCubit())
+            BlocProvider(create: (context) => AuthCubit()),
+            BlocProvider(create: (context) => SignUpCubit())
           ],
           child: MaterialApp.router(
             debugShowCheckedModeBanner: false,

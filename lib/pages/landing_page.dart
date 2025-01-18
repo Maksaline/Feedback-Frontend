@@ -73,19 +73,46 @@ class _LandingPageState extends State<LandingPage> {
                       BlocBuilder<AuthCubit, LoginState>(
                         builder: (context, state) {
                           if(state is LoginSuccess){
-                            return Row(
-                              children: [
-                                Text(
-                                  state.user.name,
-                                  style: Theme.of(context).textTheme.labelMedium,
-                                ),
-                                const SizedBox(width: 10),
-                                Icon(
-                                  Icons.account_circle,
-                                  color: Theme.of(context).colorScheme.secondary,
-                                  size: 40,
-                                ),
-                              ],
+                            return GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: Text('Log Out'),
+                                    content: Text('Are you sure you want to log out?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          context.read<AuthCubit>().logout();
+                                          context.go('/');
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('Yes'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('No'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              child: Row(
+                                children: [
+                                  Text(
+                                    state.user.name,
+                                    style: Theme.of(context).textTheme.labelMedium,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Icon(
+                                    Icons.account_circle,
+                                    color: Theme.of(context).colorScheme.secondary,
+                                    size: 40,
+                                  ),
+                                ],
+                              ),
                             );
                           }
                           else {

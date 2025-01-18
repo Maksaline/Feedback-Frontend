@@ -1,10 +1,8 @@
 import 'package:feedback/cubits/auth_cubit.dart';
-import 'package:feedback/pages/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../models/user_model.dart';
 import '../responsive/responsive_layout.dart';
 
 class LoginPage extends StatefulWidget {
@@ -90,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Responsive.isMobile(context)
                       ? const SizedBox()
-                      : Container(
+                      : SizedBox(
                     width: MediaQuery.of(context).size.width / 2,
                     child: Center(
                       child: Image.asset(
@@ -119,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                               Responsive.isDesktop(context)
                                   ? const SizedBox()
                                   : Image.asset(
-                                'assets/images/logo.png',
+                                'assets/images/logo_text.png',
                                 width: MediaQuery.of(context).size.width / 1.8,
                                 color: Theme.of(context).colorScheme.primary,
                               ),
@@ -271,6 +269,27 @@ class _LoginPageState extends State<LoginPage> {
                                             .labelMedium,
                                       ),
                                     ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Don\'t have an account?',
+                                        style: Theme.of(context).textTheme.labelSmall,
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          context.go('/signup');
+                                        },
+                                        child: Text(
+                                          'Sign up',
+                                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                            color: Theme.of(context).colorScheme.primary,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),

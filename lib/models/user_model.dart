@@ -16,8 +16,13 @@ class User {
   factory User.fromJson(Map<String, dynamic> res) {
     final json = res['user'];
     List<double> locationList = [];
-    locationList.add(json['location']['longitude']);
-    locationList.add(json['location']['latitude']);
+    if(json['location'] == null) {
+      locationList = [0.0, 0.0];
+    }
+    else {
+      locationList.add(json['location']['longitude']);
+      locationList.add(json['location']['latitude']);
+    }
 
     String isoDate = json['date_of_birth'].toString();
     DateTime date = DateTime.parse(isoDate);
