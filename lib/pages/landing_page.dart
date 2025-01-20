@@ -167,31 +167,40 @@ class _LandingPageState extends State<LandingPage> {
             ),
           ),
           SliverToBoxAdapter(
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.tertiary,
-              ),
-              child: Center(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  height: MediaQuery.of(context).size.height * 0.45,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Center(
-                        child: Text('Your feedback\nmatters', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 64)),
-                      ),
-                      Icon(
-                        Icons.feedback,
-                        size: MediaQuery.of(context).size.width / 8,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                    ],
+            child: BlocBuilder<AuthCubit, LoginState>(
+              builder: (context, state) {
+                if(state is! LoginSuccess) {
+                  return Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
-                ),
-              ),
+                  child: Center(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.45,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Center(
+                            child: Text('Your feedback\nmatters', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 64)),
+                          ),
+                          Icon(
+                            Icons.feedback,
+                            size: MediaQuery.of(context).size.width / 8,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+                }
+                else {
+                  return const SizedBox();
+                }
+              }
             )
           ),
           SliverToBoxAdapter(
@@ -333,7 +342,7 @@ class _LandingPageState extends State<LandingPage> {
                                           child: Container(
                                             height: 20,
                                             decoration: BoxDecoration(
-                                              color: Colors.green,
+                                              color: Colors.green.shade600,
                                               borderRadius: BorderRadius.only(
                                                 topLeft: Radius.circular(10),
                                                 bottomLeft: Radius.circular(10),
@@ -349,7 +358,7 @@ class _LandingPageState extends State<LandingPage> {
                                           child: Container(
                                             height: 20,
                                             decoration: BoxDecoration(
-                                              color: Colors.red,
+                                              color: Colors.red.shade600,
                                               borderRadius: BorderRadius.only(
                                                 topRight: const Radius.circular(10),
                                                 bottomRight: const Radius.circular(10),

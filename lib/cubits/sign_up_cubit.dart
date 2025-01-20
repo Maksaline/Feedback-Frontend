@@ -9,7 +9,7 @@ part 'sign_up_state.dart';
 class SignUpCubit extends Cubit<SignUpState> {
   SignUpCubit() : super(SignUpInitial());
 
-  Future<void> signUp(String name, String profession, String username, String pass, DateTime dob) async {
+  Future<void> signUp(String name, String profession, String username, String pass, DateTime dob, double lat, double long) async {
     emit(SignUpLoading());
     final  dio = Dio();
     try {
@@ -19,6 +19,10 @@ class SignUpCubit extends Cubit<SignUpState> {
         'username': username,
         'password': pass,
         'date_of_birth': dob.toIso8601String(),
+        'location': {
+          'latitude': lat,
+          'longitude': long
+        }
       });
       print(response.statusCode);
       if(response.statusCode == 200) {

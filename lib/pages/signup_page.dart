@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:go_router/go_router.dart';
+import 'package:open_street_map_search_and_pick/open_street_map_search_and_pick.dart';
 
 import '../responsive/responsive_layout.dart';
 
@@ -24,6 +25,8 @@ class _SignupPageState extends State<SignupPage> {
   bool isPassVisible = true;
   bool isRePassVisible = true;
   bool isLoading = false;
+  double long = 0.0;
+  double lat = 0.0;
 
   Future<void> _signUp() async {
     if (username.text.isEmpty || pass.text.isEmpty || reEnterPass.text.isEmpty || profession.text.isEmpty || name.text.isEmpty) {
@@ -42,7 +45,7 @@ class _SignupPageState extends State<SignupPage> {
       setState(() {
         isLoading = true;
       });
-      await context.read<SignUpCubit>().signUp(name.text, profession.text, username.text, pass.text, dob!);
+      await context.read<SignUpCubit>().signUp(name.text, profession.text, username.text, pass.text, dob!, lat, long);
       setState(() {
         isLoading = false;
       });
@@ -293,7 +296,7 @@ class _SignupPageState extends State<SignupPage> {
                                   Row(
                                     children: [
                                       Text(
-                                        'Date of Birth',
+                                        'Date of Birth:',
                                         style: Theme.of(context).textTheme.labelMedium,
                                       ),
                                       const SizedBox(width: 10),
@@ -328,6 +331,57 @@ class _SignupPageState extends State<SignupPage> {
                                       ),
                                     ],
                                   ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Location:',
+                                        style: Theme.of(context).textTheme.labelMedium,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Container(
+                                        height: 40,
+                                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2),
+                                        ),
+                                        child: TextButton(
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return Dialog(
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(10),
+                                                    ),
+                                                    child: OpenStreetMapSearchAndPick(
+                                                      onPicked: (location) {
+                                                        setState(() {
+                                                          long = location.latLong.longitude;
+                                                          lat = location.latLong.latitude;
+                                                        });
+                                                        Navigator.of(context).pop();
+                                                      },
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                            );
+                                          },
+                                          child: Text(
+                                            long == 0.0 && lat == 0.0
+                                                ? 'Pick Location'
+                                                : '${long.toStringAsFixed(2)}, ${lat.toStringAsFixed(2)}',
+                                            style: const TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Text('[Your location is private and will not be shared with anyone. We collect location just to show your providers nearby]', style: Theme.of(context).textTheme.labelSmall),
                                   const SizedBox(height: 30,),
                                   ElevatedButton(
                                     onPressed: () {
