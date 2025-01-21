@@ -13,6 +13,14 @@ class ProviderCubit extends Cubit<List<Provider>> {
     emit(providers);
   }
 
+  void updateVotes(String id, String userId, bool isPositive) async {
+    final response = await dio.put('http://localhost:3000/api/providers/vote/$id', data: {
+      'userId': userId,
+      'action': isPositive ? 'upvote' : 'downvote',
+    });
+    getProviders();
+  }
+
   void addProvider(String name, String description) async {
     final response = await dio.post('http://localhost:3000/api/providers', data: {
       'name': name,

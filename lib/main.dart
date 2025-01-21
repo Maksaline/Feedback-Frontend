@@ -2,12 +2,16 @@ import 'package:feedback/cubits/auth_cubit.dart';
 import 'package:feedback/cubits/provider_cubit.dart';
 import 'package:feedback/cubits/sign_up_cubit.dart';
 import 'package:feedback/cubits/theme_cubit.dart';
+import 'package:feedback/models/provider_model.dart';
 import 'package:feedback/pages/landing_page.dart';
 import 'package:feedback/pages/login_page.dart';
+import 'package:feedback/pages/provider_page.dart';
 import 'package:feedback/pages/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
+import 'cubits/feedback_cubit.dart';
 
 void main() {
   runApp(BlocProvider(
@@ -34,6 +38,13 @@ final _router = GoRouter(
           GoRoute(
             path: '/signup',
             builder: (context, state) => const SignupPage(),
+          ),
+          GoRoute(
+            path: '/provider',
+            builder: (context, state) {
+              final provider = state.extra as Provider;
+              return ProviderPage(provider: provider);
+            }
           )
         ]
     ),
@@ -52,7 +63,8 @@ class MyApp extends StatelessWidget {
           providers: [
             BlocProvider(create: (context) => ProviderCubit()),
             BlocProvider(create: (context) => AuthCubit()),
-            BlocProvider(create: (context) => SignUpCubit())
+            BlocProvider(create: (context) => SignUpCubit()),
+            BlocProvider(create: (context) => FeedbackCubit()),
           ],
           child: MaterialApp.router(
             debugShowCheckedModeBanner: false,

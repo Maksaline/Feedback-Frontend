@@ -1,4 +1,5 @@
 import 'package:feedback/cubits/auth_cubit.dart';
+import 'package:feedback/cubits/provider_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -59,6 +60,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       );
+      context.read<ProviderCubit>().getProviders();
       Future.delayed(const Duration(seconds: 1), () => context.pop());
     } else if(state is LoginFailure) {
       ScaffoldMessenger.of(context).showSnackBar(

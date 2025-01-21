@@ -37,10 +37,10 @@ class ThemeCubit extends Cubit<ThemeData> {
       ),
     ) : ThemeData(
       brightness: Brightness.dark,
-      colorScheme: const ColorScheme.dark(
-        primary: Color(0xFF70D560),
-        onPrimary: Color(0xFF326D3C),
-        inversePrimary: Color(0xFF17412D),
+      colorScheme: ColorScheme.dark(
+        primary: Colors.lightGreen,
+        onPrimary: Colors.lightGreen[700]!,
+        inversePrimary: Colors.lightGreen[900],
         secondary: Colors.white,
         surface: Colors.black,
         tertiary: Color(0xFFEEFAEF),
