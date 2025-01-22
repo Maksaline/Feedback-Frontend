@@ -357,9 +357,6 @@ class _ProviderPageState extends State<ProviderPage> {
               },
             ),
           ),
-          SliverToBoxAdapter(
-
-          )
         ],
       )
     );
