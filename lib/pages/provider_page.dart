@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 
 import '../cubits/auth_cubit.dart';
 import '../cubits/provider_cubit.dart';
+import 'feedback_widget.dart';
 
 class ProviderPage extends StatefulWidget {
   final Provider provider;
@@ -286,73 +287,15 @@ class _ProviderPageState extends State<ProviderPage> {
           SliverToBoxAdapter(
             child: BlocBuilder<FeedbackCubit, List<Feedbacks>>(
               builder: (context, feedbacks) {
-                return Column(
-                  children: feedbacks.map((feedback) {
-                    return Container(
-                      padding: EdgeInsets.only(
-                        top: 20,
-                        bottom: 20,
-                        right: MediaQuery.of(context).size.width * 0.2,
-                        left: MediaQuery.of(context).size.width * 0.2,
-                      ),
-                      margin: const EdgeInsets.only(top: 20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 20,
-                                backgroundColor: Theme.of(context).colorScheme.primary,
-                              ),
-                              const SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(feedback.name, style: Theme.of(context).textTheme.labelMedium),
-                                  Text(feedback.age, style: Theme.of(context).textTheme.labelSmall),
-                                ],
-                              ),
-                              const Spacer(),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.more_vert_rounded, color: Theme.of(context).colorScheme.secondary),
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 25),
-                          Text(feedback.title, style: Theme.of(context).textTheme.titleMedium),
-                          const SizedBox(height: 25),
-                          Text(feedback.description, style: Theme.of(context).textTheme.labelMedium),
-                          const SizedBox(height: 25),
-                          Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.thumb_up_alt_outlined, color: Theme.of(context).colorScheme.secondary),
-                              ),
-                              Text(feedback.upvotes.toString(), style: Theme.of(context).textTheme.labelSmall),
-                              const SizedBox(width: 25),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.thumb_down_alt_outlined, color: Theme.of(context).colorScheme.secondary),
-                              ),
-                              Text(feedback.downvotes.toString(), style: Theme.of(context).textTheme.labelSmall),
-                              const SizedBox(width: 25),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.comment_outlined, color: Theme.of(context).colorScheme.secondary),
-                              ),
-                              Text(feedback.comments.toString(), style: Theme.of(context).textTheme.labelSmall),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList(),
+                return Container(
+                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.2),
+                  child: ListView(
+                    primary: false,
+                    shrinkWrap: true,
+                    children: feedbacks.map(
+                        (feedback) => FeedbackWidget(feedback: feedback)
+                    ).toList(),
+                  ),
                 );
               },
             ),
