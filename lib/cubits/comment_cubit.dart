@@ -1,16 +1,16 @@
 import 'package:dio/dio.dart';
-import 'package:feedback/models/feedback_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../models/feedback_model.dart';
 
-class FeedbackCubit extends Cubit<List<Feedbacks>> {
-  FeedbackCubit() : super([]);
+class CommentCubit extends Cubit<Map<String, List<Feedbacks>>> {
+  CommentCubit() : super({});
   final dio = Dio();
 
-  void getFeedbacks(String id) async {
-    final response = await dio.get('http://localhost:3000/api/feedbacks?to=$id');
+  void getComments(String id) async {
+    final response = await dio.get('http://localhost:3000/api/comments?reply_to=$id');
     final responseData = response.data;
     if(responseData.isEmpty) {
-      emit([]);
+      emit({});
       return;
     }
     List<dynamic> jsonList = response.data;
@@ -20,6 +20,8 @@ class FeedbackCubit extends Cubit<List<Feedbacks>> {
       jsonList[i]['name'] = name;
     }
     List<Feedbacks> feedbacks = jsonList.map((e) => Feedbacks.fromJson(e)).toList();
-    emit(feedbacks);
+    final updatedState = Map<String, List<Feedbacks>>.from(state);
+    updatedState[id] = feedbacks;
+    emit(updatedState);
   }
 }

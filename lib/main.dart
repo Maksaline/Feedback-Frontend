@@ -1,4 +1,5 @@
 import 'package:feedback/cubits/auth_cubit.dart';
+import 'package:feedback/cubits/comment_cubit.dart';
 import 'package:feedback/cubits/provider_cubit.dart';
 import 'package:feedback/cubits/sign_up_cubit.dart';
 import 'package:feedback/cubits/theme_cubit.dart';
@@ -65,6 +66,7 @@ class MyApp extends StatelessWidget {
             BlocProvider(create: (context) => AuthCubit()),
             BlocProvider(create: (context) => SignUpCubit()),
             BlocProvider(create: (context) => FeedbackCubit()),
+            BlocProvider(create: (context) => CommentCubit()),
           ],
           child: MaterialApp.router(
             debugShowCheckedModeBanner: false,

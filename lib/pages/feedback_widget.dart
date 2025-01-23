@@ -1,4 +1,6 @@
+import 'package:feedback/cubits/comment_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../models/feedback_model.dart';
 
@@ -19,7 +21,7 @@ class _FeedbackWidgetState extends State<FeedbackWidget> {
     final feedback = widget.feedback;
     return Container(
       decoration: BoxDecoration(
-        border: (widget.level > 0) ? Border(left: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2)) : null,
+        border: (widget.level > 0) ? Border(left: BorderSide(color: Theme.of(context).colorScheme.outline, width: 2)) : null,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +29,6 @@ class _FeedbackWidgetState extends State<FeedbackWidget> {
         children: [
           Container(
             padding: const EdgeInsets.all(20),
-            margin: const EdgeInsets.only(top: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -70,7 +71,11 @@ class _FeedbackWidgetState extends State<FeedbackWidget> {
                     Text(feedback.downvotes.toString(), style: Theme.of(context).textTheme.labelSmall),
                     const SizedBox(width: 25),
                     IconButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        if(feedback.comments == 0) {
+                          return;
+                        }
+                        context.read<CommentCubit>().getComments(feedback.id);
                         setState(() {
                           _showReplies = !_showReplies;
                         });
@@ -84,18 +89,26 @@ class _FeedbackWidgetState extends State<FeedbackWidget> {
             ),
           ),
           if (_showReplies)
-            Padding(
-              padding: const EdgeInsets.only(left: 40),
-              child: Column(
-                children: [
-                  for (var i = 0; i < feedback.comments; i++)
-                    FeedbackWidget(
-                      feedback: feedback,
-                      padding: widget.padding,
-                      level: widget.level + 1,
-                    ),
-                ],
-              ),
+            BlocBuilder<CommentCubit, Map<String, List<Feedbacks>>>(
+              builder: (context, comments) {
+                final comment = comments[feedback.id];
+                if (comment == null) {
+                  return const SizedBox();
+                }
+                return Padding(
+                  padding: const EdgeInsets.only(left: 40),
+                  child: Column(
+                    children: [
+                      for (var i = 0; i < comment.length; i++)
+                        FeedbackWidget(
+                          feedback: comment[i],
+                          padding: widget.padding,
+                          level: widget.level + 1,
+                        ),
+                    ],
+                  ),
+                );
+              }
             ),
         ],
       ),

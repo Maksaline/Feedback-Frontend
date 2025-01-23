@@ -1,9 +1,8 @@
 class Feedbacks {
   final String id;
+  final String userId;
   final String name;
-  final String title;
   final String description;
-  final bool isPositive;
   final String dp;
   final int upvotes;
   final int downvotes;
@@ -14,10 +13,9 @@ class Feedbacks {
 
   Feedbacks({
     required this.id,
+    required this.userId,
     required this.name,
-    required this.title,
     required this.description,
-    required this.isPositive,
     required this.dp,
     required this.upvotes,
     required this.downvotes,
@@ -27,7 +25,7 @@ class Feedbacks {
     required this.downvoters,
   });
 
-  factory Feedbacks.fromJson(Map<String, dynamic> json, String name) {
+  factory Feedbacks.fromJson(Map<String, dynamic> json) {
     String isoDate = json['createdAt'].toString().trim();
     DateTime date = DateTime.parse(isoDate);
     final age = DateTime.now().difference(date);
@@ -43,10 +41,9 @@ class Feedbacks {
     }
     return Feedbacks(
       id: json['_id'],
-      name: name,
-      title: json['title'],
+      userId: json['user'],
+      name: json['name'],
       description: json['description'],
-      isPositive: json['positive'],
       dp: 'default.png',
       upvotes: json['upvote'],
       downvotes: json['downvote'],
