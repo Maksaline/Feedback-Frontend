@@ -22,4 +22,14 @@ class FeedbackCubit extends Cubit<List<Feedbacks>> {
     List<Feedbacks> feedbacks = jsonList.map((e) => Feedbacks.fromJson(e)).toList();
     emit(feedbacks);
   }
+
+  void giveVote(String id, String userId, bool isUpvote,  String parentId) async {
+    final response = await dio.put('http://localhost:3000/api/feedbacks/vote/$id', data: {
+      'userId': userId,
+      'action': isUpvote ? 'upvote' : 'downvote',
+    });
+    if(response.statusCode == 200) {
+      getFeedbacks(parentId);
+    }
+  }
 }

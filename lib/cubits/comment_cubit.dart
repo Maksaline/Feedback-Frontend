@@ -24,4 +24,14 @@ class CommentCubit extends Cubit<Map<String, List<Feedbacks>>> {
     updatedState[id] = feedbacks;
     emit(updatedState);
   }
+
+  void giveVote(String id, String userId, bool isUpvote,  String parentId) async {
+    final response = await dio.put('http://localhost:3000/api/comments/vote/$id', data: {
+      'userId': userId,
+      'action': isUpvote ? 'upvote' : 'downvote',
+    });
+    if(response.statusCode == 200) {
+      getComments(parentId);
+    }
+  }
 }

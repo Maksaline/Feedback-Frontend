@@ -293,7 +293,7 @@ class _ProviderPageState extends State<ProviderPage> {
                     primary: false,
                     shrinkWrap: true,
                     children: feedbacks.map(
-                        (feedback) => FeedbackWidget(feedback: feedback)
+                        (feedback) => FeedbackWidget(feedback: feedback, parentId: widget.provider.id,)
                     ).toList(),
                   ),
                 );
