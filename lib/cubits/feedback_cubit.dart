@@ -32,4 +32,15 @@ class FeedbackCubit extends Cubit<List<Feedbacks>> {
       getFeedbacks(parentId);
     }
   }
+
+  void giveFeedback(String to, String userId, String content) async {
+    final response = await dio.post('http://localhost:3000/api/feedbacks', data: {
+      'to': to,
+      'user': userId,
+      'description': content,
+    });
+    if(response.statusCode == 200) {
+      getFeedbacks(to);
+    }
+  }
 }

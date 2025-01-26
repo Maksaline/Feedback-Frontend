@@ -1,5 +1,6 @@
 import 'package:feedback/cubits/comment_cubit.dart';
 import 'package:feedback/cubits/feedback_cubit.dart';
+import 'package:feedback/cubits/reply_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -192,6 +193,7 @@ class _FeedbackWidgetState extends State<FeedbackWidget> {
                         const SizedBox(width: 25),
                         IconButton(
                           onPressed: () async {
+                            context.read<ReplyCubit>().setFeedback(feedback);
                             if(feedback.comments == 0) {
                               return;
                             }

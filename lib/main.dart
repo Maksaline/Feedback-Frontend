@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'cubits/feedback_cubit.dart';
+import 'cubits/reply_cubit.dart';
 
 void main() {
   runApp(BlocProvider(
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
             BlocProvider(create: (context) => SignUpCubit()),
             BlocProvider(create: (context) => FeedbackCubit()),
             BlocProvider(create: (context) => CommentCubit()),
+            BlocProvider(create: (context) => ReplyCubit()),
           ],
           child: MaterialApp.router(
             debugShowCheckedModeBanner: false,

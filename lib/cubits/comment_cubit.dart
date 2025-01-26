@@ -34,4 +34,17 @@ class CommentCubit extends Cubit<Map<String, List<Feedbacks>>> {
       getComments(parentId);
     }
   }
+
+  void addComment(String to, String userId, String content) async {
+    final response = await dio.post('http://localhost:3000/api/comments', data: {
+      'reply_to': to,
+      'user': userId,
+      'description': content,
+    });
+    final incToFeedbacks = await dio.put('http://localhost:3000/api/feedbacks/inc/$to');
+    final incToComments = await dio.put('http://localhost:3000/api/comments/inc/$to');
+    if(response.statusCode == 200 && incToFeedbacks.statusCode == 200 && incToComments.statusCode == 200) {
+      getComments(to);
+    }
+  }
 }
