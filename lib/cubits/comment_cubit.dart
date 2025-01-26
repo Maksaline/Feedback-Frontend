@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:feedback/cubits/feedback_cubit.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/feedback_model.dart';
 
@@ -35,7 +37,7 @@ class CommentCubit extends Cubit<Map<String, List<Feedbacks>>> {
     }
   }
 
-  void addComment(String to, String userId, String content) async {
+  void addComment(String to, String userId, String content, String parentId, BuildContext context, String providerId) async {
     final response = await dio.post('http://localhost:3000/api/comments', data: {
       'reply_to': to,
       'user': userId,
@@ -44,7 +46,8 @@ class CommentCubit extends Cubit<Map<String, List<Feedbacks>>> {
     final incToFeedbacks = await dio.put('http://localhost:3000/api/feedbacks/inc/$to');
     final incToComments = await dio.put('http://localhost:3000/api/comments/inc/$to');
     if(response.statusCode == 200 && incToFeedbacks.statusCode == 200 && incToComments.statusCode == 200) {
-      getComments(to);
+      getComments(parentId);
+      context.read<FeedbackCubit>().getFeedbacks(providerId);
     }
   }
 }

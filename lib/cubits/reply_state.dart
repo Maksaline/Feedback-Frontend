@@ -7,5 +7,6 @@ final class ReplyInitial extends ReplyState {}
 
 final class ReplySet extends ReplyState {
   final Feedbacks feedback;
-  ReplySet(this.feedback);
+  final String parentId;
+  ReplySet(this.feedback, this.parentId);
 }

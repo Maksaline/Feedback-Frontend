@@ -193,7 +193,7 @@ class _FeedbackWidgetState extends State<FeedbackWidget> {
                         const SizedBox(width: 25),
                         IconButton(
                           onPressed: () async {
-                            context.read<ReplyCubit>().setFeedback(feedback);
+                            context.read<ReplyCubit>().setFeedback(feedback, widget.parentId);
                             if(feedback.comments == 0) {
                               return;
                             }

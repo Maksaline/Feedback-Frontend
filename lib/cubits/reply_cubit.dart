@@ -8,8 +8,8 @@ part 'reply_state.dart';
 class ReplyCubit extends Cubit<ReplyState> {
   ReplyCubit() : super(ReplyInitial());
 
-  void setFeedback(Feedbacks feedback) {
-    emit(ReplySet(feedback));
+  void setFeedback(Feedbacks feedback, String parentId) {
+    emit(ReplySet(feedback, parentId));
   }
 
   void clearFeedback() {

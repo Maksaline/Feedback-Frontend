@@ -379,8 +379,7 @@ class _ProviderPageState extends State<ProviderPage> {
                                       }
                                     } else if(state is ReplySet) {
                                       if(userState is LoginSuccess) {
-                                        context.read<CommentCubit>().addComment(state.feedback.id, userState.user.id, _feedbackController.text);
-                                        context.read<FeedbackCubit>().getFeedbacks(widget.provider.id);
+                                        context.read<CommentCubit>().addComment(state.feedback.id, userState.user.id, _feedbackController.text, state.parentId, context, widget.provider.id);
                                       }
                                       else {
                                         showDialog(
