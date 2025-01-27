@@ -28,4 +28,11 @@ class ProviderCubit extends Cubit<List<Provider>> {
     });
     getProviders();
   }
+
+  void searchProviders(String query) async {
+    final response = await dio.get('http://localhost:3000/api/providers/search?keyword=$query');
+    List<dynamic> jsonList = response.data;
+    List<Provider> providers = jsonList.map((e) => Provider.fromJson(e)).toList();
+    emit(providers);
+  }
 }

@@ -18,6 +18,8 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
+  final TextEditingController _searchController = TextEditingController();
+  bool searched = false;
   @override
   void initState() {
     super.initState();
@@ -141,18 +143,26 @@ class _LandingPageState extends State<LandingPage> {
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width * 0.5,
                       height: MediaQuery.of(context).size.height * 0.45,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Center(
-                            child: Text('Your feedback\nmatters', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 64)),
-                          ),
-                          Icon(
-                            Icons.feedback,
-                            size: MediaQuery.of(context).size.width / 8,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ],
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Your feedback\nmatters', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 64)),
+                                const SizedBox(height: 25),
+                                Text('Here, users are the source of all information...', style: Theme.of(context).textTheme.labelMedium),
+                              ],
+                            ),
+                            Icon(
+                              Icons.feedback,
+                              size: MediaQuery.of(context).size.width / 8,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -187,11 +197,22 @@ class _LandingPageState extends State<LandingPage> {
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.search, color: Colors.grey),
+                        (!searched) ? Icon(Icons.search, color: Colors.grey)
+                            : IconButton(
+                          icon: Icon(Icons.close, color: Colors.grey),
+                          onPressed: () {
+                            _searchController.clear();
+                            context.read<ProviderCubit>().getProviders();
+                            setState(() {
+                              searched = false;
+                            });
+                          },
+                        ),
                         const SizedBox(width: 8),
-                        const Expanded(
+                        Expanded(
                           child: TextField(
-                            decoration: InputDecoration(
+                            controller: _searchController,
+                            decoration: const InputDecoration(
                               hintText: 'Search for providers',
                               border: InputBorder.none,
                             ),
@@ -207,6 +228,10 @@ class _LandingPageState extends State<LandingPage> {
                           child: IconButton(
                             icon: Icon(Icons.search, color: Theme.of(context).colorScheme.secondary),
                             onPressed: () {
+                              context.read<ProviderCubit>().searchProviders(_searchController.text);
+                              setState(() {
+                                searched = true;
+                              });
                             },
                           ),
                         ),
@@ -388,6 +413,22 @@ class _LandingPageState extends State<LandingPage> {
             ),
           )
         ],
+      ),
+      floatingActionButton: BlocBuilder<AuthCubit, LoginState>(
+        builder: (context, state) {
+          if(state is LoginSuccess) {
+            return FloatingActionButton.extended(
+            onPressed: () {
+              context.go('/add-provider');
+            },
+            label: Text('Create New Provider', style: TextStyle(color: Theme.of(context).colorScheme.surface),),
+            icon: const Icon(Icons.create_rounded, color: Colors.white),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+          );
+          } else {
+            return const SizedBox();
+          }
+        }
       ),
     );
   }

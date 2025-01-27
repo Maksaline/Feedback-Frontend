@@ -12,6 +12,63 @@ class FeedbackAppbar extends StatefulWidget {
 }
 
 class _FeedbackAppbarState extends State<FeedbackAppbar> {
+  Dialog buildDialog(BuildContext context, String name, String id) {
+    return Dialog(
+      child: Container(
+        height: 400,
+        width: 400,
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Text(name, style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 25),
+            Text('Chose an Action', style: Theme.of(context).textTheme.labelMedium),
+            const Spacer(),
+            ElevatedButton(
+              onPressed: () {
+                context.pop();
+                context.go('/profile', extra: id);
+              },
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                fixedSize: const Size(330, 50),
+              ),
+              child: Text(
+                'Go To Profile',
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Theme.of(context).colorScheme.surface),
+              ),
+            ),
+            const SizedBox(height: 25),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                side: BorderSide(
+                  color: Theme.of(context).colorScheme.secondary,
+                  width: 2,
+                ),
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                fixedSize: const Size(330, 50),
+              ),
+              onPressed: () {
+                context.read<AuthCubit>().logout();
+                context.go('/');
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Log Out',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
@@ -68,26 +125,7 @@ class _FeedbackAppbarState extends State<FeedbackAppbar> {
                             onTap: () {
                               showDialog(
                                 context: context,
-                                builder: (context) => AlertDialog(
-                                  title: const Text('Log Out'),
-                                  content: const Text('Are you sure you want to log out?'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        context.read<AuthCubit>().logout();
-                                        context.go('/');
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: const Text('Log Out'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: const Text('Cancel'),
-                                    ),
-                                  ],
-                                ),
+                                builder: (context) => buildDialog(context, state.user.name, state.user.id),
                               );
                             },
                             child: Row(

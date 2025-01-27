@@ -181,9 +181,27 @@ class _ProviderPageState extends State<ProviderPage> {
                                 ),
                               ),
                               const Spacer(),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.more_vert_rounded, color: Theme.of(context).colorScheme.secondary),
+                              TextButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text('Not accessible', style: Theme.of(context).textTheme.titleLarge),
+                                        content: Text('You need to be at least level 5 to contribute in the info panel', style: Theme.of(context).textTheme.labelMedium),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              context.pop();
+                                            },
+                                            child: const Text('Close', style: TextStyle(color: Colors.red)),
+                                          )
+                                        ],
+                                      );
+                                    }
+                                  );
+                                },
+                                child: const Text('Info Panel', style: TextStyle(color: Colors.red)),
                               )
                             ],
                           ),
