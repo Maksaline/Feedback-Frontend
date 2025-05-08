@@ -175,8 +175,9 @@ class _LandingPageState extends State<LandingPage> {
             )
           ),
           SliverToBoxAdapter(
-            child: SizedBox(
-              height: 150,
+            child: Container(
+              color: Color(0xFFF4F5F6),
+              height: 140,
               width: MediaQuery.of(context).size.width,
               child: Center(
                 child: Padding(
@@ -185,15 +186,9 @@ class _LandingPageState extends State<LandingPage> {
                     width: MediaQuery.of(context).size.width * 0.5,
                     padding: const EdgeInsets.only(left: 8.0),
                     decoration: BoxDecoration(
-                      color: Colors.grey[200],
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(25.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          blurRadius: 8.0,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
+                      border: Border.all(color: Theme.of(context).colorScheme.outline, width: 0.4),
                     ),
                     child: Row(
                       children: [
@@ -243,41 +238,41 @@ class _LandingPageState extends State<LandingPage> {
             ),
           ),
           SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: 20,
-                left: MediaQuery.of(context).size.width * 0.15,
-                right: MediaQuery.of(context).size.width * 0.15,
-                bottom: 20,
-              ),
-              child: BlocBuilder<ProviderCubit, List<Provider>>(
-                builder: (context, providers) {
-                  return ListView.builder(
-                    primary: false,
-                    shrinkWrap: true,
-                    itemCount: providers.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 15.0),
-                        child: GestureDetector(
+            child: Container(
+              color: const Color(0xFFF4F5F6),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width * 0.15,
+                  right: MediaQuery.of(context).size.width * 0.15,
+                  bottom: 20,
+                ),
+                child: BlocBuilder<ProviderCubit, List<Provider>>(
+                  builder: (context, providers) {
+                    return GridView.builder(
+                      primary: false,
+                      shrinkWrap: true,
+                      itemCount: providers.length,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 20,
+                        mainAxisSpacing: 20,
+                        childAspectRatio: 2.32,
+                      ),
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
                           onTap: () {
                             context.go('/provider', extra: providers[index]);
                           },
                           child: Container(
-                            padding: const EdgeInsets.all(20),
+                            padding: const EdgeInsets.all(15),
                             decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.surface,
-                              borderRadius: BorderRadius.circular(10.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Theme.of(context).colorScheme.outline.withOpacity(0.4),
-                                  blurRadius: 9.0,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
+                              borderRadius: BorderRadius.circular(15.0),
+                              border: Border.all(color: Theme.of(context).colorScheme.outline, width: 0.4),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Row(
                                   children: [
@@ -306,13 +301,16 @@ class _LandingPageState extends State<LandingPage> {
                                 ),
                                 Text('${providers[index].total} feedbacks', style: Theme.of(context).textTheme.labelSmall),
                                 const SizedBox(height: 25),
-                                Text(providers[index].description, style: Theme.of(context).textTheme.labelMedium),
-                                const SizedBox(height: 25),
+                                SizedBox(
+                                  height: 50,
+                                    child: Text(providers[index].description, style: Theme.of(context).textTheme.labelMedium)
+                                ),
+                                const SizedBox(height: 20),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width * 0.5,
+                                      width: 350,
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
@@ -352,13 +350,13 @@ class _LandingPageState extends State<LandingPage> {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 25),
+                                const SizedBox(height: 20),
                                 Divider(
                                   color: Theme.of(context).colorScheme.outline,
                                   thickness: 1,
                                 ),
-                                const SizedBox(height: 25),
                                 Row(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Text(providers[index].age, style: Theme.of(context).textTheme.labelSmall),
                                     const Spacer(),
@@ -404,11 +402,11 @@ class _LandingPageState extends State<LandingPage> {
                               ],
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  );
-                }
+                        );
+                      },
+                    );
+                  }
+                ),
               ),
             ),
           )
