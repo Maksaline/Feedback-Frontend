@@ -206,9 +206,9 @@ class _ProviderPageState extends State<ProviderPage> {
                             ],
                           ),
                           Text('${provider.total} feedbacks', style: Theme.of(context).textTheme.labelSmall),
-                          const SizedBox(height: 25),
+                          const SizedBox(height: 15),
                           Text(provider.description, style: Theme.of(context).textTheme.labelMedium),
-                          const SizedBox(height: 25),
+                          const SizedBox(height: 15),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -253,12 +253,11 @@ class _ProviderPageState extends State<ProviderPage> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 25),
+                          const SizedBox(height: 20),
                           Divider(
                             color: Theme.of(context).colorScheme.outline,
                             thickness: 1,
                           ),
-                          const SizedBox(height: 25),
                           Row(
                             children: [
                               Text(provider.age, style: Theme.of(context).textTheme.labelSmall),

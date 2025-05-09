@@ -151,16 +151,17 @@ class _LandingPageState extends State<LandingPage> {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Your feedback\nmatters', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 64)),
+                                Text('Your Feedback\nMatters', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 64)),
                                 const SizedBox(height: 25),
                                 Text('Here, users are the source of all information...', style: Theme.of(context).textTheme.labelMedium),
+                                Text('...and you can be one of them', style: Theme.of(context).textTheme.labelMedium),
+                                Text('Join us now and start providing feedback', style: Theme.of(context).textTheme.labelMedium),
                               ],
                             ),
-                            Icon(
-                              Icons.feedback,
-                              size: MediaQuery.of(context).size.width / 8,
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
+                            Image.asset(
+                              'assets/images/Feedback.png',
+                              fit: BoxFit.contain,
+                            )
                           ],
                         ),
                       ),

@@ -139,7 +139,7 @@ class _FeedbackWidgetState extends State<FeedbackWidget> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -147,7 +147,8 @@ class _FeedbackWidgetState extends State<FeedbackWidget> {
                   children: [
                     CircleAvatar(
                       radius: 20,
-                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      backgroundColor: (feedback.name.endsWith('b')) ? Theme.of(context).colorScheme.primary : Colors.blueGrey,
+                      child: Icon(Icons.person, color: Theme.of(context).colorScheme.surface),
                     ),
                     const SizedBox(width: 10),
                     Column(
@@ -164,9 +165,9 @@ class _FeedbackWidgetState extends State<FeedbackWidget> {
                     )
                   ],
                 ),
-                const SizedBox(height: 25),
+                const SizedBox(height: 15),
                 Text(feedback.description, style: Theme.of(context).textTheme.labelMedium),
-                const SizedBox(height: 25),
+                const SizedBox(height: 15),
                 BlocBuilder<AuthCubit, LoginState>(
                   builder: (context, state) {
                     return Row(
